@@ -1,4 +1,4 @@
-FROM ricog/php-fpm:0.1
+FROM ricog/php-fpm:0.2
 MAINTAINER Rick Guyer <ricoguyer@gmail.com>
 
 RUN apt-get update && apt-get install -y php5-intl php5-cli git curl
