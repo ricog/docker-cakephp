@@ -1,4 +1,4 @@
-FROM ricog/php-fpm:0.2
+FROM ricog/php-fpm:php7
 MAINTAINER Rick Guyer <ricoguyer@gmail.com>
 
 # Install required server packages
@@ -11,9 +11,18 @@ MAINTAINER Rick Guyer <ricoguyer@gmail.com>
 # php5-sqlite   - CakePHP 3 - required by debugkit
 # php5-xsl      - CakePHP 2
 #
-RUN apt-get update && apt-get install -y curl git php5-cli php5-intl php5-readline php5-sqlite php5-xsl
-RUN sed -i '/upload_max_filesize /c upload_max_filesize = 20M' /etc/php5/fpm/php.ini
-RUN sed -i '/post_max_size /c post_max_size = 20M' /etc/php5/fpm/php.ini
+RUN apt-get update && apt-get install -y \
+	curl \
+	git \
+	php-cli \
+	php-intl \
+	php-readline \
+	php-sqlite3 \
+	php-xsl \
+	&& rm -rf /var/lib/apt/lists/*
+
+RUN sed -i '/upload_max_filesize /c upload_max_filesize = 20M' /etc/php/7.0/fpm/php.ini
+RUN sed -i '/post_max_size /c post_max_size = 20M' /etc/php/7.0/fpm/php.ini
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 RUN usermod -u 1000 www-data
@@ -21,4 +30,4 @@ RUN usermod -u 1000 www-data
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php5-fpm"]
+CMD ["php-fpm7.0"]
